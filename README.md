@@ -1,3 +1,20 @@
+### New Features: ByteSize and TimeDuration Parsers
+
+Wrangler now supports parsing and aggregating values with human-readable units such as:
+
+- **Byte Size**: `"1KB"`, `"2.5MB"`, `"10GB"`, etc.
+- **Time Duration**: `"500ms"`, `"2s"`, `"3m"`, `"1.5h"`, etc.
+
+You can now use these in custom recipes for data aggregation using the new `aggregate-stats` directive.
+
+#### Example Usage:
+
+```wrangler
+aggregate-stats :transfer_size :duration total_size_bytes total_duration_ms
+
+
+
+
 # Data Prep
 
 ![cm-available](https://cdap-users.herokuapp.com/assets/cm-available.svg)

@@ -38,9 +38,8 @@ options {
  */
 }
 
-/**
- * Parser Grammar for recognizing tokens and constructs of the directives language.
- */
+// Parser Rules
+
 recipe
  : statements EOF
  ;
@@ -64,6 +63,8 @@ directive
     | stringList
     | numberRanges
     | properties
+    | byteSize
+    | timeDuration
   )*?
   ;
 
@@ -167,6 +168,14 @@ bool
  : Bool
  ;
 
+byteSize
+ : BYTE_SIZE
+ ;
+
+timeDuration
+ : TIME_DURATION
+ ;
+
 condition
  : OBrace (~CBrace | condition)* CBrace
  ;
@@ -195,10 +204,8 @@ identifierList
  : Identifier (',' Identifier)*
  ;
 
+// Lexer Rules
 
-/*
- * Following are the Lexer Rules used for tokenizing the recipe.
- */
 OBrace   : '{';
 CBrace   : '}';
 SColon   : ';';
@@ -247,6 +254,13 @@ BackSlash: '\\';
 Dollar   : '$';
 Tilde    : '~';
 
+BYTE_SIZE
+  : [0-9]+ ('.' [0-9]+)? BYTE_UNIT
+  ;
+
+TIME_DURATION
+  : [0-9]+ ('.' [0-9]+)? TIME_UNIT
+  ;
 
 Bool
  : 'true'
@@ -293,7 +307,8 @@ UnicodeEscape
    ;
 
 fragment
-   HexDigit : ('0'..'9'|'a'..'f'|'A'..'F') ;
+HexDigit : ('0'..'9'|'a'..'f'|'A'..'F')
+ ;
 
 Comment
  : ('//' ~[\r\n]* | '/*' .*? '*/' | '--' ~[\r\n]* ) -> skip
@@ -311,3 +326,17 @@ fragment Int
 fragment Digit
  : [0-9]
  ;
+
+fragment BYTE_UNIT
+  : [kK][bB]?
+  | [mM][bB]
+  | [gG][bB]
+  | [tT][bB]
+  ;
+
+fragment TIME_UNIT
+  : 'ms'
+  | 's'
+  | 'm'
+  | 'h'
+  ;

@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+package io.cdap.wrangler.api.step;
 
-package io.cdap.wrangler.api.annotations;
+import io.cdap.wrangler.api.Row;
+import io.cdap.wrangler.api.exception.SkipRowException;
+import io.cdap.wrangler.api.exception.StepException;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.List;
 
-/**
- * This annotation defines the category for a directive.
- */
-@Documented
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Categories {
-  String[] categories() default "default";
+public interface Step {
+  List<Row> execute(List<Row> rows) throws StepException, SkipRowException;
 }
+
